@@ -1,7 +1,6 @@
 { pkgs }: {
   deps = [
     pkgs.python38Full
-    pkgs.python38Packages.poetry
   ];
   env = {
     PYTHON_LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [
