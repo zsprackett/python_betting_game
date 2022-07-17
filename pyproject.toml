@@ -5,7 +5,7 @@ description = ""
 authors = ["S. Zachariah Sprackett <zac@sprackett.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.9"
 tabulate = "^0.8.10"
 termcolor = "^1.1.0"
 
