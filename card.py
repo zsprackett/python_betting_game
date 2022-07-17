@@ -1,6 +1,8 @@
 from suits import Suits
 
+# This class represents a single card
 class Card(object):
+    # static method to get valid card ranges
     @staticmethod
     def value_range():
         cards = {}
@@ -8,6 +10,7 @@ class Card(object):
             cards[i] = Card.name(i)
         return cards
 
+    # static method to look up a card name from a card value
     @staticmethod
     def name(value):
         cards = {
@@ -27,12 +30,15 @@ class Card(object):
         }
         return cards[value]
 
+    # boolean: returns true for red cards
     def is_red(self):
         return self.suit in Suits.red()
 
+    # boolean: returns true for black cards
     def is_black(self):
         return self.suit in Suits.black()
 
+    # boolean: returns true for face cards
     def is_facecard(self):
         return self.value > 10
 

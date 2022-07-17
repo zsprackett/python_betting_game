@@ -4,11 +4,14 @@ from tabulate import tabulate
 from suits import Suits
 from card import Card 
 
+# A class to represent one or more decks of cards
 class Deck(object):
+    # Factory for a shuffled deck
     @classmethod
     def shuffled(cls, count=1):
         return cls(True, count)
     
+    # Factory for an unshuffled deck
     @classmethod
     def factory_fresh(cls, count=1):
         return cls(False, count)
@@ -21,7 +24,8 @@ class Deck(object):
         self.by_value = {}
         self.by_suit = {}
 
-        card_value_range = range(1,14)
+        # store cards in appropriate bins for performance reasons
+        card_value_range = Card.value_range()
         for v in card_value_range:
             self.by_value[v] = []
         for s in Suits.all():
@@ -48,12 +52,14 @@ class Deck(object):
     def len(self):
         return len(self.cards)
 
+    # peek at the next card in the deck without removing it
     def peek(self):
         if len(self.cards) == 0:
             return None
         else:
             return self.cards[0]
 
+    # pop the next card from the deck
     def pop(self):
         c = self.cards.pop(0)
         if (c.is_facecard()):
@@ -66,11 +72,13 @@ class Deck(object):
         self.by_suit[c.suit].remove(c)
         return c
 
+    # calculate a specific probability
     def calc_probability(self, p, rnd=1):
         l1 = len(p)
         l2 = len(self.cards)
         return round(l1 / l2 * 100, rnd)
 
+    # display all probabilities to the user in a nice format
     def probabilities(self):
         data = []
         card_value = 13

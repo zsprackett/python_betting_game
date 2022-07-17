@@ -1,3 +1,4 @@
+# Represents all suits
 class Suits(object):
     @staticmethod
     def red():

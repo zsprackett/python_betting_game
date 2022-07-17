@@ -2,6 +2,7 @@ from typing import Dict
 
 
 class InputManager(object):
+    # Ask the user for an integer choice between 1 and upper limit, return the int
     @staticmethod
     def get_int_input(prompt, upper_limit):
         n = -1
@@ -16,6 +17,7 @@ class InputManager(object):
                 print(f"ERROR: please enter a number between 1 and {upper_limit}")
         return n
 
+    # Ask the user for a floating point choice between 1 and upper_limit, return the float
     @staticmethod
     def get_float_input(prompt, upper_limit):
         if type(upper_limit) == str:
@@ -33,6 +35,7 @@ class InputManager(object):
                 print(f"ERROR: please enter a number between 1 and {upper_limit}")
         return round(n,2)
 
+    # Ask the user to choose from the items in a list, or the items in a hash, return the list entry or hash key of their choice.
     @staticmethod
     def get_choice(choices, prompt="Please select an option: "):
         if isinstance(choices, dict):
