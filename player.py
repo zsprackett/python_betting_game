@@ -20,14 +20,20 @@ class Player(object):
         else:
             return False
 
-    def bank_balance(self):
-        return int(self.bank)
+    def format_money(self, money):
+        return '{0:.2f}'.format(money)
+
+    def get_bank_balance(self):
+        return self.format_money(self.bank)
+
+    def get_wager(self):
+        return self.format_money(self.wager)
 
     def play_one_round(self):
         choice = None
         while (not choice):
             if self.bank > 1:
-                print(f'You have {self.bank_balance()} dollars in the bank and are wagering {self.wager} dollars.\n')
+                print(f'You have ${self.get_bank_balance()} in the bank and are wagering ${self.get_wager()}.\n')
             else:
                 print(colored('You are broke!!!', 'red'))
                 sys.exit(0)
@@ -36,21 +42,21 @@ class Player(object):
                 choice = InputManager.get_choice(['Category', 'Card', 'Probabilities', 'Wager', 'Quit'])
                 if choice == 'Category':
                     choice = InputManager.get_choice({'face': 'Face card', 'red': 'Red card', 'black': 'Black card', 'suit': 'Suit'})
-                    if choice == 'Suit':
-                            choice = InputManager.get_choice(Suits.all())
+                    if choice == 'suit':
+                        choice = InputManager.get_choice(Suits.all())
                 elif choice == 'Card':
                     choice = InputManager.get_choice(Card.value_range())
                 elif choice == 'Probabilities':
                     print(self.deck.probabilities())
                     choice = None
                 elif choice == 'Wager':
-                    self.wager = InputManager.get_numeric_input("Enter a wager in dollars: ", self.bank_balance())
+                    self.wager = InputManager.get_float_input("Enter a wager: ", self.get_bank_balance())
                     choice = None
                 else:
                     sys.exit(0)
             else:
-                print(colored(f'Your wager of {self.wager} exceeds your balance of {self.bank_balance()}!', 'red'))
-                self.wager = InputManager.get_numeric_input("Enter a wager in dollars: ", self.bank_balance())
+                print(colored(f'Your wager of {self.get_wager()} exceeds your balance of {self.get_bank_balance()}!', 'red'))
+                self.wager = InputManager.get_float_input("Enter a wager: ", self.bank)
 
         winners = []
         if choice == 'face':
@@ -64,13 +70,14 @@ class Player(object):
         else:
             winners = self.deck.by_value[choice]
 
-        odds = (self.deck.calc_probability(winners) + 100) / 100
+        multiplier = (200 - self.deck.calc_probability(winners)) / 100
         c = self.deck.peek()
         
         if c in winners:
-            print(colored(f'{c.name_and_suit()} - You win {round(self.wager * odds, 2)} dollars!', 'green'))
-            self.bank += self.wager * odds
+            winnings = round(self.wager * multiplier, 2)
+            print(colored(f'{c.name_and_suit()} - You win ${self.format_money(winnings)} [{multiplier} multiplier]!', 'green'))
+            self.bank += winnings
         else:
-            print(colored(f'{c.name_and_suit()} - You lose {self.wager} dollars.', 'red'))
+            print(colored(f'{c.name_and_suit()} - You lose ${self.get_wager()}.', 'red'))
             self.bank -= self.wager
         self.deck.pop()
