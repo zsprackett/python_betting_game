@@ -1,6 +1,7 @@
 { pkgs }: {
   deps = [
-    pkgs.python38Full
+    pkgs.python39Full
+    pkgs.python39Packages.poetry
   ];
   env = {
     PYTHON_LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [
@@ -12,7 +13,7 @@
       # Needed for matplotlib
       pkgs.xorg.libX11
     ];
-    PYTHONBIN = "${pkgs.python38Full}/bin/python3.8";
+    PYTHONBIN = "${pkgs.python39Full}/bin/python3.9";
     LANG = "en_US.UTF-8";
   };
 }
